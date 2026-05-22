@@ -64,14 +64,39 @@ cd finance-app
 
 ### Docker Deployment
 
-Build and run using Docker:
+#### One-Shot Container (Recommended)
+
+Build and run the container in one command:
 
 ```bash
-docker build -t finance-dashboard .
-docker run -p 8080:80 finance-dashboard
+docker build -t csco-finance . && docker run -d --name csco-finance -p 80:80 csco-finance
 ```
 
-Then navigate to `http://localhost:8080` in your browser.
+Access at: `http://127.0.0.1`
+
+#### Using Custom Hostname (csco-finance)
+
+To access the dashboard using a friendly hostname instead of localhost:
+
+**1. Add hostname to Windows hosts file:**
+- Open Notepad as Administrator
+- Go to File → Open → `C:\Windows\System32\drivers\etc\hosts`
+- Find this line: `127.0.0.1 kubernetes.docker.internal`
+- Change it to: `127.0.0.1 kubernetes.docker.internal csco-finance`
+- Save the file
+- Run in PowerShell: `ipconfig /flushdns`
+
+**2. Access your dashboard:**
+```
+http://csco-finance
+```
+
+#### Stop & Remove Container
+
+```bash
+docker stop csco-finance
+docker rm csco-finance
+```
 
 ## Project Structure
 
@@ -80,6 +105,7 @@ finance-app/
 ├── index.html       # HTML structure and layout
 ├── style.css        # Styling and animations
 ├── script.js        # Core functionality and API integration
+├── nginx.conf       # Nginx configuration for Docker deployment
 ├── Dockerfile       # Docker configuration for deployment
 └── README.md        # This file
 ```
@@ -113,9 +139,18 @@ Complete styling including:
 - Mobile-first responsive design
 - Scrollable portfolio list with custom scrollbar
 
+### [nginx.conf](nginx.conf)
+Nginx web server configuration that:
+- Serves static files from `/usr/share/nginx/html`
+- Configures MIME types for proper CSS/JS delivery
+- Handles SPA routing with try_files fallback
+- Caches static assets with proper headers
+- Listens on port 80 with server name `csco-finance`
+
 ### [Dockerfile](Dockerfile)
 Docker configuration that:
 - Uses lightweight Alpine Nginx image
+- Copies custom nginx.conf configuration
 - Copies all static files to Nginx serving directory
 - Exposes port 80
 - Runs Nginx in foreground mode
@@ -167,6 +202,30 @@ This app relies on two external APIs:
 
 ## Troubleshooting
 
+### Docker & Deployment
+
+**Dashboard shows white background without styling**
+- This happens when CSS is served with wrong MIME type (`text/plain` instead of `text/css`)
+- Verify nginx.conf includes: `include /etc/nginx/mime.types;`
+- Rebuild container: `docker build -t csco-finance . && docker run -d --name csco-finance -p 80:80 csco-finance`
+
+**Cannot access http://csco-finance**
+- Verify hosts file entry: `127.0.0.1 kubernetes.docker.internal csco-finance`
+- Flush DNS cache: `ipconfig /flushdns`
+- Try using `http://127.0.0.1` directly instead
+
+**Container keeps exiting**
+- Check logs: `docker logs csco-finance`
+- Verify Dockerfile copies nginx.conf: `COPY nginx.conf /etc/nginx/nginx.conf`
+- Ensure no port conflicts: `docker ps -a`
+
+### Browser Issues
+
+**Page displays poorly or looks unstyled in browser**
+- Clear browser cache: `Ctrl + Shift + Delete` → Clear all browsing data
+- Hard refresh: `Ctrl + Shift + R`
+- Try incognito/private mode: `Ctrl + Shift + N`
+
 **"Ticker Not Found"**
 - Ensure the ticker symbol is correct and exists
 - Check your internet connection
@@ -175,7 +234,7 @@ This app relies on two external APIs:
 **No news articles appearing**
 - RSS feed might be temporarily unavailable
 - Try searching for a different ticker
-- Check browser console for CORS or fetch errors
+- Check browser console (F12) for CORS or fetch errors
 
 **Portfolio not saving**
 - Verify localStorage is enabled in your browser
