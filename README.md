@@ -1,6 +1,11 @@
 # CSCO Live Finance Dashboard
 
+[![GitHub Pages](https://img.shields.io/badge/Live-GitHub%20Pages-blue?style=flat-square&logo=github)](https://btaira.github.io/finance-app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
 A beautiful, real-time stock market dashboard built with vanilla JavaScript, HTML, and CSS. Track stock prices, manage your portfolio, and stay updated with the latest financial news—all in one elegant interface.
+
+🌐 **[Live Demo](https://btaira.github.io/finance-app)** - Deploy your own via GitHub Pages or Docker
 
 ## Features
 
@@ -97,6 +102,25 @@ http://csco-finance
 docker stop csco-finance
 docker rm csco-finance
 ```
+
+### GitHub Pages Deployment
+
+Deploy instantly to GitHub Pages with automatic CI/CD:
+
+**1. Fork or use this repository**
+
+**2. Enable GitHub Pages:**
+- Go to Settings → Pages
+- Source: `Deploy from a branch`
+- Branch: `main`, folder: `/root`
+- Click Save
+
+**3. Done!** 🚀
+- Your dashboard is live at: `https://<your-username>.github.io/finance-app`
+- Automatic deployments on every push to `main` branch
+- Uses GitHub Actions workflow (`.github/workflows/deploy.yml`)
+
+No additional setup needed—just push code and it deploys automatically!
 
 ## Project Structure
 
