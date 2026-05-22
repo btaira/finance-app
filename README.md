@@ -49,23 +49,32 @@ A beautiful, real-time stock market dashboard built with vanilla JavaScript, HTM
 
 ## Getting Started
 
-### Local Setup
+Choose your deployment method:
+
+| Method | Cost | Setup Time | Best For |
+|--------|------|-----------|----------|
+| **GitHub Pages** | Free | 2 min | Public sharing, live demo |
+| **Docker Local** | Free | 5 min | Development, testing |
+| **Browser Local** | Free | 1 min | Quick testing |
+
+### Local Browser Setup
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/btaira/finance-app.git
 cd finance-app
 ```
 
 2. Open in your browser:
-   - Simply open `index.html` in any modern web browser
-   - No build step required!
+   - Double-click `index.html` 
+   - Or drag `index.html` into your browser
+   - No build step or server required!
 
 3. Start exploring:
-   - The dashboard loads with default holdings (CSCO, GOOG, LMT, VZ, T, NVDA, PANW, F, HPQ, TM, TSM)
-   - Enter a ticker symbol to search for a stock
-   - Click any holding in "My Holdings" to view its details
-   - Adjust your share count in the "Shares Owned" input
+   - Default portfolio: CSCO, GOOG, LMT, VZ, T, NVDA, PANW, F, HPQ, TM, TSM
+   - Search for any ticker symbol in the top-right search box
+   - Click any holding in "My Holdings" to view details
+   - Edit "Shares Owned" to manage your portfolio (saved locally)
 
 ### Docker Deployment
 
@@ -105,22 +114,56 @@ docker rm csco-finance
 
 ### GitHub Pages Deployment
 
-Deploy instantly to GitHub Pages with automatic CI/CD:
+Deploy instantly to GitHub Pages with automatic CI/CD using GitHub Actions.
 
-**1. Fork or use this repository**
+#### Setup (One-Time)
 
-**2. Enable GitHub Pages:**
-- Go to Settings → Pages
-- Source: `Deploy from a branch`
-- Branch: `main`, folder: `/root`
-- Click Save
+1. **Go to Repository Settings:**
+   - Navigate to: https://github.com/btaira/finance-app/settings/pages
+   - Or: Settings → Pages (left sidebar)
 
-**3. Done!** 🚀
-- Your dashboard is live at: `https://<your-username>.github.io/finance-app`
-- Automatic deployments on every push to `main` branch
-- Uses GitHub Actions workflow (`.github/workflows/deploy.yml`)
+2. **Configure Build Source:**
+   - Under "Build and deployment"
+   - **Source**: Select `GitHub Actions` (not "Deploy from a branch")
+   - Click **Save**
 
-No additional setup needed—just push code and it deploys automatically!
+3. **Verify Deployment:**
+   - Go to **Actions** tab
+   - Wait for "Deploy to GitHub Pages" workflow to complete (green ✓)
+   - Click the workflow to see the deployment URL
+
+#### Access Your Live Dashboard
+
+```
+https://btaira.github.io/finance-app
+```
+
+#### Automatic Deployments
+
+Once enabled, every push to `main` branch automatically:
+- Triggers the GitHub Actions workflow
+- Builds and deploys your dashboard
+- Updates your live site within 1-2 minutes
+
+View deployment status anytime in the **Actions** tab.
+
+#### Troubleshooting GitHub Pages
+
+**"Pages site failed" error:**
+- Verify you selected `GitHub Actions` as the source (not "Deploy from a branch")
+- Check Actions tab for workflow error details
+- Ensure repository is public (or has Pages enabled for private repos)
+
+**Site not updating after push:**
+- Check Actions tab to see if workflow is running
+- Verify the workflow completed successfully (green checkmark)
+- Clear browser cache: `Ctrl + Shift + Delete`
+- Wait a few minutes for deployment to complete
+
+**Cannot access https://btaira.github.io/finance-app:**
+- Verify Settings → Pages shows your live site URL
+- Check that workflow has completed successfully
+- Try accessing in incognito/private browser window
 
 ## Project Structure
 
